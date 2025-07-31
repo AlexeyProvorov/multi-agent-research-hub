@@ -1,6 +1,7 @@
 Useful thoughts and experience about the MAS developing 
 
 
+
 https://cognition.ai/blog/dont-build-multi-agents#principles-of-context-engineering 
 <details>
   <summary>Don’t Build Multi-Agents – June 12, 2025</summary>
@@ -61,7 +62,6 @@ KGAREVION achieves an average accuracy improvement of **+6.75%** over 15 baselin
 **Main conclusion:**  
 By integrating LLM hypothesis generation with rigorous KG‑based verification and iterative refinement, KGAREVION significantly enhances the precision and reliability of knowledge‑intensive biomedical QA, paving the way for clinical decision support and advanced biomedical research applications. :contentReference[oaicite:6]{index=6}
 </details>
-
 
 
 ## RAG
@@ -151,3 +151,24 @@ This whitepaper presents a comprehensive overview of generative AI agents, defin
 Production‑grade multi‑agent systems can dramatically enhance complex research and application workflows by combining robust orchestration patterns, targeted learning strategies, and diverse tool integrations; however, bridging the gap from prototype to reliable, scalable deployments demands meticulous engineering in tool design, evaluation frameworks, fault recovery, and iterative refinement. :contentReference[filecite:turn0file0]{index=2}
 </details>
 
+## Approaches
+### Anthropic
+Important articles
+https://www.anthropic.com/engineering/built-multi-agent-research-system
+https://www.anthropic.com/engineering/building-effective-agents
+https://www.anthropic.com/news/model-context-protocol\
+
+
+## Architectures LLM
+### DeepSeek
+https://www.youtube.com/watch?v=0VLAoVGf_74
+
+DeepSeek-V2
+https://arxiv.org/pdf/2405.0443
+
+DeepSeek-R1
+https://arxiv.org/pdf/2501.12948
+
+
+## MCP
+https://github.com/modelcontextprotocol/servers

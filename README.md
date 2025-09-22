@@ -1,9 +1,5 @@
 Useful thoughts and experience about the MAS developing 
-
-
 # Must have
-
-
 
 https://arxiv.org/pdf/2508.10146
 <details>
@@ -106,6 +102,7 @@ The framework replaces rigid, precomputed workflows with a fluid, adaptive archi
 **Main conclusion:**  
 Aime significantly outperforms conventional multi‑agent systems—achieving new state‑of‑the‑art success rates of 77.6% on GAIA, 66.4% on SWE‑bench Verified, and 92.3% on WebVoyager—demonstrating superior adaptability, efficiency, and overall task success in dynamic environments :contentReference[oaicite:4]{index=4}.
 </details>
+
 
 ## RAG, Graphs, Fine-tuning
 
@@ -299,6 +296,32 @@ https://www.anthropic.com/engineering/building-effective-agents
 https://www.anthropic.com/news/model-context-protocol\
 
 
+
+https://arxiv.org/pdf/2509.00189
+<details>
+  <summary>HiVA: Self-organized Hierarchical Variable Agent via Goal-driven Semantic-Topological Evolution – Aug 29, 2025</summary>
+
+**Tags:** Multi-Agent Systems, Large Language Models, Semantic-Topological Evolution, Textual Gradients, Adaptive Intelligence  
+
+This paper introduces **HiVA**, a novel framework for multi-agent systems that unifies semantic (what agents do) and topological (how agents interact) evolution through the **STEV algorithm**. Unlike static workflows or reactive loops, HiVA enables agents to evolve both behavior and collaboration structure from a single agent into a self-organized hierarchy.  
+
+Key innovations:  
+- **Semantic-Topological Evolution (STEV):** joint optimization of prompts, tools, and network structure using **textual gradients** derived from environmental feedback.  
+- **Dynamic routing via Bayesian bandits (KABB):** selects task-relevant subgraphs of agents by balancing past performance, task alignment, and synergy.  
+- **Hierarchical memory:** distributed across agent parameters, connection weights, and overall topology, enabling retention of collaboration patterns.  
+- **Cost-efficient adaptability:** HiVA improves accuracy by 5–10% across tasks (QA, coding, reasoning, complex environments) while reducing LLM usage compared to baselines.  
+
+**Experimental results:**  
+- Outperforms ReAct, AutoGPT, MaAS, and others in multi-hop QA (+18.3%), program synthesis (+6.2%), and agentic environments (highest cost-efficiency score).  
+- Ablation shows both **Semantic Evolution (SEV)** and **Topological Evolution (TEV)** are critical; removing either reduces performance by 7–11%.  
+- Weakness: struggles in math tasks requiring strict logical consistency due to conflicts in agent verification.  
+
+**Main conclusion:**  
+HiVA demonstrates that **co-evolving agent semantics and topology is essential** for scalable, adaptive intelligence. By self-organizing into specialized, interconnected roles, HiVA systems achieve higher accuracy, efficiency, and robustness. This framework marks a step toward **self-improving, general-purpose agentic AI**, though challenges remain in conflict resolution and handling ambiguous feedback.  
+</details>
+
+
+
 ## Architectures LLM
 ### DeepSeek
 https://www.youtube.com/watch?v=0VLAoVGf_74
@@ -312,6 +335,24 @@ https://arxiv.org/pdf/2501.12948
 
 ## MCP
 https://github.com/modelcontextprotocol/servers
+
+https://arxiv.org/pdf/2508.15760
+<details>
+  <summary>LiveMCP-101: Stress Testing and Diagnosing MCP-enabled Agents on Challenging Queries – August 21, 2025</summary>
+
+**Tags:** AI Agents, Model Context Protocol, Tool Orchestration, Benchmarks, Error Analysis, Token Efficiency
+
+This paper introduces **LiveMCP-101**, a benchmark of 101 complex real-world tasks designed to evaluate how AI agents use the **Model Context Protocol (MCP)** for multi-step reasoning and tool integration. Key contributions include:  
+- A dataset of queries (easy, medium, hard), refined by LLM rewriting and human review, requiring web search, file operations, mathematical reasoning, and data analysis.  
+- A **dual-execution evaluation method**: a reference agent follows a validated ground-truth execution plan, while test agents solve tasks autonomously, enabling robust comparison under dynamic tool outputs.  
+- Experimental results showing that **even frontier models like GPT-5 succeed in fewer than 60% of tasks** (39% on hard tier), while open-source models perform significantly worse.  
+- Ablation studies on iteration limits and MCP server pools, revealing clear efficiency ceilings and higher sensitivity to distractors in weaker models.  
+- A detailed **failure analysis** across seven categories (planning, parameter errors, output handling), with semantic errors dominating even strong models.  
+
+**Main conclusion:**  
+LiveMCP-101 demonstrates that current LLM-based agents remain far from reliable autonomous tool users. They face persistent issues with dynamic environments, robust planning, and efficient token use. The benchmark establishes a new rigorous standard and highlights clear directions for advancing reasoning, orchestration, and error recovery in the next generation of AI agents.
+</details>
+
 
 
 
@@ -395,4 +436,50 @@ Galaxy outperforms state-of-the-art benchmarks by integrating proactive behavior
 
 
 # Context Engineering
+
+
+# Others
+
+
+https://arxiv.org/pdf/2508.19227
+<details>
+  <summary>Generative Interfaces for Language Models – August 26, 2025</summary>
+
+**Tags:** Large Language Models, Human-AI Interaction, Generative Interfaces, User Experience, Cognitive Offloading
+
+This paper introduces a new paradigm called **Generative Interfaces (GenUI)**, where LLMs move beyond static chat to dynamically generate **interactive user interfaces** tailored to queries. Instead of long text outputs, models create adaptive tools such as learning simulators, analysis dashboards, or workflow managers.
+
+Key contributions:
+- Proposes **structured interface-specific representations** (interaction flows + finite state machines) to formally map user queries into UI logic.  
+- Develops a **generation pipeline** that produces executable HTML/JS interfaces using reusable components and web retrieval.  
+- Implements **iterative refinement with adaptive reward functions**, where LLMs evaluate, score, and improve interfaces until high-quality results are achieved.  
+- Introduces **UIX benchmark** and a multi-dimensional evaluation (functional, interactive, emotional), validated through large-scale human and LLM-based studies.  
+
+**Findings:**
+- GenUI outperforms traditional conversational UIs in **70–84% of cases**, especially for information-dense and structured tasks.  
+- Strongest gains appear in **data analysis, visualization, and business strategy**, where visual structure and interactivity reduce cognitive load.  
+- Users cite **cognitive offloading**, **professional visual structure**, and **greater trustworthiness** as main drivers of preference.  
+- Limitations include frontend-only support, iteration latency, and occasional over-generation of interfaces for simple queries.  
+
+**Main conclusion:**  
+Generative Interfaces mark a shift from LLMs as “textual copilots” to **designers of adaptive digital environments**. By combining structured UI logic with iterative refinement, GenUI significantly enhances usability, clarity, and user satisfaction, laying groundwork for future multimodal, domain-specific, and collaborative AI systems.
+</details>
+
+https://arxiv.org/pdf/2508.16876v1
+<details>
+  <summary>Dream to Chat: Model-based Reinforcement Learning on Dialogues with User Belief Modeling – August 23, 2025</summary>
+
+**Tags:** Dialogue Systems, Reinforcement Learning, World Models, User Belief Modeling, Empathetic AI  
+
+This paper introduces **DreamCUB**, a framework that combines model-based reinforcement learning (MBRL) with user belief modeling to enhance dialogue systems:  
+- Defines a **Dialogue World Model (DWM)** capable of predicting user beliefs (emotion, sentiment, intention), next utterances, and rewards, extending beyond observable text.  
+- Frames dialogues as a **POMDP**, where hidden psychological states are modeled via an information bottleneck, improving policy optimization.  
+- Demonstrates **state-of-the-art results** on sentiment/emotion classification, query prediction, and dialogue generation across datasets like DailyDialog, ESConv, and EmpatheticDialogues.  
+- Shows **strong generalization** to out-of-domain empathetic conversations and achieves the highest scores in **human evaluations** of fluency, sensitivity, and satisfaction.  
+- Ablation studies confirm that incorporating user beliefs into both the world model and reward model is critical for optimal performance.  
+
+**Main conclusion:**  
+DreamCUB represents a significant step toward emotionally intelligent dialogue agents. By enabling systems to imagine future dialogue trajectories and reason about users’ emotional dynamics, it balances response quality with empathy and robustness. While limited to a subset of belief features (emotion, sentiment, intention), this approach opens pathways toward more human-centric and generalist AI assistants.  
+</details>
+
 

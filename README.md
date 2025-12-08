@@ -1,6 +1,35 @@
 Useful thoughts and experience about the MAS developing 
 # Must have
 
+https://arxiv.org/pdf/2510.26745v1
+<details>
+  <summary>Deep Sequence Models Tend to Memorize Geometrically; It Is Unclear Why – October 30, 2025</summary>
+
+**Tags:** Deep Learning, Transformers, Parametric Memory, Representation Learning, Spectral Bias
+
+This paper argues that large sequence models (Transformers, Mamba, simple neural nets) don’t just store atomic facts as a brute-force associative table, but instead **spontaneously organize them into a global geometric structure in embedding space**. This is demonstrated on specially constructed path-finding tasks over graphs, where:
+
+- The authors contrast two kinds of parametric memory:  
+  - **Associative memory**, where each co-occurrence is stored as a local entry in a weight matrix over otherwise arbitrary token embeddings.  
+  - **Geometric memory**, where the embeddings themselves encode global graph structure, so that dot products reflect multi-hop proximity even between nodes that never co-occurred during training.  
+
+- They design an **in-weights path-star task**: the model first memorizes all edges of a large tree-like graph (tens of thousands of nodes), then must output the full path from root to a given leaf purely from its stored weights. In this setup, both Transformer and Mamba achieve near-perfect generalization to unseen leaves, even though analogous **in-context** versions of the same graph task are known to fail under next-token training.
+
+- Analyzing token-wise learning, they show that the **hardest token—the first step on the path—is learned in isolation**, without intermediate supervision or chain-of-thought signals. Under a purely associative-memory view, this requires learning an ℓ-fold composition of lookups, which should be computationally intractable to learn by gradient descent. The success of the models therefore implies that they implicitly reduce this multi-step reasoning task to a **single geometric step**.
+
+- By visualizing embeddings and cosine-distance heatmaps, they show that nodes belonging to the same path form tight clusters and that leaf/first-node pairs are especially aligned—evidence that the model has constructed a **global geometric map of the graph** rather than a local lookup table.
+
+- The authors then challenge standard explanations:  
+  - **Capacity/regularization** cannot be the main driver, because for certain graphs geometric and associative representations are shown to be **equally or almost equally succinct** in terms of bits and parameter norms.  
+  - **Supervisory pressure** also fails to explain the effect, since similar global geometries emerge even when training only on local edge prediction (no explicit path-finding supervision), and geometry appears for unseen paths as well.
+
+- To probe the origin of this geometric bias, they analyze a simpler Node2Vec-style model (1-layer, 1-hop, cross-entropy loss). They find that training dynamics naturally exhibit a **spectral bias**: embeddings converge to span the top eigenvectors (Fiedler-like vectors) of the graph Laplacian, while the effective update matrix develops those same eigenvectors in its null space. This happens **without** low-rank constraints, early stopping, or explicit multi-hop objectives, suggesting that gradient descent alone can induce **global, spectrally-organized geometries from purely local training signals**.
+
+**Main conclusion:**  
+Deep sequence models, when trained even on collections of “incompressible” atomic facts, tend to synthesize **geometric world models** in their embedding spaces rather than simple associative tables. This geometry collapses hard multi-hop reasoning into easy one-step vector computations, yet cannot be fully explained by standard notions of capacity, regularization, or supervision. Understanding and amplifying this naturally arising spectral/geometric bias could lead to models with more powerful implicit reasoning and combinatorial creativity, but also raises challenges for precise knowledge editing, unlearning, and controllable retrieval.
+</details>
+
+
 https://arxiv.org/pdf/2508.10146
 <details>
   <summary>Agentic AI Frameworks: Architectures, Protocols, and Design Challenges – August 2025</summary>
@@ -104,7 +133,7 @@ Aime significantly outperforms conventional multi‑agent systems—achieving ne
 </details>
 
 
-## RAG, Graphs, Fine-tuning
+## RAG, Graphs, Fine-tuning, 
 
 
 https://arxiv.org/pdf/2401.15884 + [Сode on Google Colab](https://colab.research.google.com/github/lancedb/vectordb-recipes/blob/main/tutorials/Corrective-RAG-with_Langgraph/CRAG_with_Langgraph.ipynb#scrollTo=gUlaOeBxpIxD)
@@ -288,6 +317,25 @@ By using graph-based problems as a reasoning substrate, LLMs become not only str
 </details>
 
 
+https://arxiv.org/pdf/2510.21148
+<details>
+  <summary>How to Auto-optimize Prompts for Domain Tasks (EGO-Prompt) – Oct 24, 2025</summary>
+
+**Tags:** Prompt Optimization, Causal Graphs, Textual Gradients, LLM Reasoning, Domain Adaptation, Neuro-Symbolic AI
+
+This paper introduces **EGO-Prompt (Evolutionary Graph Optimization for Prompting)**, a framework that automatically improves LLM reasoning by jointly evolving prompts and domain knowledge structures through:
+
+- Proposing **Semantic Causal Graphs (SCG)** as flexible, expert-initialized but self-correcting structures that encode domain-specific causal knowledge and act as an interpretable reasoning backbone. :contentReference[oaicite:0]{index=0}  
+- Introducing a **two-stage reasoning pipeline** where the model first generates *instance-specific reasoning guidance* from the SCG, then performs final prediction conditioned on this structured guidance. :contentReference[oaicite:1]{index=1}  
+- Applying **textual gradients** — natural-language feedback generated by stronger LLMs — to iteratively optimize not only the prompt but also the graph structure itself through add/edit/delete causal relations. :contentReference[oaicite:2]{index=2}  
+
+**Key results:**  
+EGO-Prompt achieves **+7–12% F1 improvement** over state-of-the-art prompt optimization baselines and enables **small LLMs to match or exceed larger reasoning models** at a fraction of the inference cost, while also improving interpretability via refined causal graphs. :contentReference[oaicite:3]{index=3}
+
+**Main conclusion:**  
+By enabling prompts and structured causal knowledge to co-evolve through language-based gradients, EGO-Prompt represents a shift from static prompt engineering toward **self-adaptive, causally grounded reasoning systems**, laying foundations for future AI systems that can refine not only their answers, but the structure of their own thinking. :contentReference[oaicite:4]{index=4}
+</details>
+
 ## Approaches
 ### Anthropic
 Important articles
@@ -378,6 +426,24 @@ Key contributions include:
 Modern LLMs can technically *process* long contexts but cannot *understand* them when all information matters. NeedleChain exposes this gap and sets a new standard for evaluating—and improving—true long-context reasoning. The findings urge a shift from merely scaling input length to enhancing *semantic integration* within that length.
 </details>
 
+https://arxiv.org/pdf/2511.16043
+<details>
+  <summary>Agent0: Unleashing Self-Evolving Agents from Zero Data via Tool-Integrated Reasoning – Nov 20, 2025</summary>
+
+**Tags:** Self-Evolving Agents, Reinforcement Learning, Tool Use, Curriculum Generation, Zero-Data Training
+
+Agent0 introduces a fully autonomous framework where two agents—**a Curriculum Agent** and **an Executor Agent**—co-evolve without any human-provided data.  
+The Curriculum Agent generates frontier tasks rewarded for **executor uncertainty**, **tool-use induction**, and **task diversity**, while the Executor Agent learns to solve them through **multi-turn tool-integrated reasoning** using a Python sandbox.  
+A novel **Ambiguity-Dynamic PPO (ADPO)** stabilizes learning by scaling advantages and relaxing clipping for ambiguous tasks, enabling emergence of new reasoning patterns.
+
+**Key contributions:**
+- A **closed self-evolution loop** that continually increases task difficulty and agent capability.  
+- **Tool-driven curricula**, where tasks progressively require more computation and structured reasoning.  
+- Significant improvements: **+18% mathematical reasoning** and **+24% general reasoning** over base models.
+
+**Main conclusion:**  
+By coupling autonomous curriculum generation with tool-augmented, ambiguity-aware reinforcement learning, Agent0 demonstrates a scalable path for LLMs to self-improve beyond the limits of their initial knowledge—pointing toward genuinely self-evolving, high-capability AI agents.
+</details>
 
 
 ## Agentic Web
@@ -434,8 +500,46 @@ This paper introduces Galaxy, a cognition-centered IPA framework by:
 Galaxy outperforms state-of-the-art benchmarks by integrating proactive behavior, robust privacy management, and continuous self-improvement, demonstrating the potential of co-constructive cognitive architectures in LLM agents.
 </details>
 
+https://arxiv.org/pdf/2511.09030
+<details>
+  <summary>Solving a Million-Step LLM Task with Zero Errors — Nov 12, 2025</summary>
 
-# Context Engineering
+**Tags:** Large Language Models, Multi-Agent Systems, Error Correction, Long-Horizon Reasoning, AI Scaling
+
+This paper introduces a new paradigm for scaling LLM-based systems through **Massively Decomposed Agentic Processes (MDAPs)**, implemented as the MAKER framework, which successfully executes a task requiring over one million LLM steps with zero errors by:
+
+- Applying **Maximal Agentic Decomposition (MAD)**, breaking complex tasks into the smallest possible micro-steps handled by specialized micro-agents to eliminate context overload and reduce per-step error rates.  
+- Introducing **First-to-ahead-by-k voting**, a statistically grounded multi-agent error-correction mechanism that scales reliability logarithmically with task length.  
+- Using **Red-flagging mechanisms** that discard malformed or overly long model outputs to reduce correlated and pathological errors, dramatically improving overall stability.  
+
+The framework is validated on the **Towers of Hanoi (20 disks)** benchmark, achieving perfect execution across **1,048,575 steps**, demonstrating that scalable reliability can be achieved through architectural design rather than increasingly powerful base models.
+
+**Main conclusion:**  
+The paper demonstrates that superhuman reliability in long-horizon tasks is achievable through extreme task decomposition and distributed error correction, suggesting that future AI scalability will depend more on system architecture and agent orchestration than on further enlarging monolithic language models.
+
+</details>
+
+# Issues
+
+
+https://arxiv.org/pdf/2511.02687
+<details>
+  <summary>The Collaboration Gap – November 2025</summary>
+
+**Tags:** Multi-Agent Systems, Large Language Models, Collaboration, Coordination, Relay Inference, AI Communication
+
+This paper introduces and empirically defines the **Collaboration Gap** — the performance drop that occurs when large language models (LLMs) must cooperate with other agents, including identical copies of themselves.  
+Through a new **Collaborative Maze Benchmark**, the authors evaluate 32 modern models (OpenAI, Google, Anthropic, xAI, Cohere, etc.) in scenarios requiring partial information sharing and joint problem-solving.
+
+Key findings include:
+- **Severe collaboration degradation:** Most models lose 30–70% accuracy when moving from solo to paired performance, even with identical partners.  
+- **Heterogeneous asymmetry:** Stronger models tend to mirror weaker partners’ reasoning styles, leading to performance loss unless dialogue order is controlled.  
+- **Relay Inference breakthrough:** Allowing a strong model to “prime” the conversation (set structure and strategy) dramatically restores joint accuracy, suggesting that conversation framing is a core factor in machine cooperation.  
+
+**Main conclusion:**  
+Collaborative intelligence is a distinct dimension of capability, not an emergent property of solo intelligence.  
+Future AI systems must be trained and architected for **mutual understanding, role negotiation, and communication grounding**—skills that cannot be patched post hoc. The study establishes a new foundation for evaluating and improving multi-agent AI ecosystems.
+</details>
 
 
 # Others
@@ -482,4 +586,55 @@ This paper introduces **DreamCUB**, a framework that combines model-based reinfo
 DreamCUB represents a significant step toward emotionally intelligent dialogue agents. By enabling systems to imagine future dialogue trajectories and reason about users’ emotional dynamics, it balances response quality with empathy and robustness. While limited to a subset of belief features (emotion, sentiment, intention), this approach opens pathways toward more human-centric and generalist AI assistants.  
 </details>
 
+<details>
+  <summary>Simulating Psychological Risks in Human-AI Interactions – Nov 12, 2025</summary>
 
+**Tags:** Large Language Models, AI Safety, Mental Health, Human-AI Interaction, Risk Simulation, Psychosis, Suicide, AI Alignment
+
+This paper presents a real-case-driven framework for proactively identifying psychological risks in human–AI interactions by:
+- Building a **simulation pipeline grounded in real-world harm cases**, extracting *Action → Outcome* patterns from 18 documented incidents involving addiction, anorexia, depression, homicide, psychosis, and suicide.  
+- Generating **2,160 demographically diversified scenarios** combined with clinically validated mental health staging models to test how AI systems behave across escalating crisis levels.  
+- Evaluating **four major LLMs** (GPT-5, Llama 4, Gemma 3, Sao10K Euryale) through multi-turn dialogues, revealing that nearly **37% of responses actively worsen psychological risk**.  
+- Introducing a **taxonomy of AI failure modes**, classifying harmful responses into four major classes and fifteen subtypes (e.g., aggression normalization, emotional minimization, parasocial reinforcement, and eating disorder enablement).  
+
+**Main conclusion:**  
+Current large language models are not merely imperfect in high-risk psychological contexts — they systematically amplify harmful cognitive and emotional patterns. Without preventive, clinically grounded safety evaluation, conversational AI poses a structurally embedded risk of escalating mental health deterioration, particularly in vulnerable populations.
+
+Source: :contentReference[oaicite:0]{index=0}
+
+</details>
+
+
+https://arxiv.org/pdf/2510.20967
+<details>
+  <summary>3DReasonKnee: Advancing Grounded Reasoning in Medical Vision-Language Models – Oct 23, 2025</summary>
+
+**Tags:** Medical AI, Vision-Language Models, 3D MRI, Grounded Reasoning, Chain-of-Thought, MOAKS, Clinical AI
+
+This paper introduces the first large-scale **3D grounded reasoning dataset** for medical imaging by:
+- Proposing **3DReasonKnee**, a dataset of 494K expert-annotated quintuples combining 3D MRI volumes, diagnostic questions, 3D bounding boxes, clinician-authored chain-of-thought reasoning, and structured MOAKS severity scores.  
+- Establishing **ReasonKnee-Bench**, a benchmark to evaluate both anatomical localization (3D IoU) and diagnostic reasoning accuracy in vision-language models.  
+- Demonstrating that current state-of-the-art VLMs fail to perform reliable region-level localization and step-by-step diagnostic reasoning, revealing a critical gap between machine perception and real clinical reasoning workflows.  
+
+**Main conclusion:**  
+The work shows that modern multimodal models do not truly “think” like clinicians and that grounded 3D spatial reasoning is the main bottleneck. By providing expert-level reasoning traces and volumetric localization, 3DReasonKnee lays the foundation for next-generation medical AI that can move from surface-level pattern recognition toward trustworthy, interpretable, and clinically aligned decision-making.
+
+**Source (local PDF):** /mnt/data/2510.20967v1.pdf
+</details>
+
+# Hallucinations
+
+
+https://arxiv.org/pdf/2512.01797v2 ⚡⚡⚡
+<details>
+  <summary>H-Neurons: On the Existence, Impact, and Origin of Hallucination-Associated Neurons in LLMs – December 1, 2025</summary>
+
+**Tags:** Large Language Models, Hallucinations, Neuron-Level Mechanisms, Over-Compliance, Reliability
+
+This paper uncovers a tiny, highly predictive subset of **hallucination-associated neurons (H-Neurons)** inside LLMs by training a sparse linear probe on neuron contributions for answer tokens.  
+It then shows that **scaling these neurons’ activations** causally controls a spectrum of **over-compliance behaviors**—accepting false premises, trusting misleading context, sycophancy under user pressure, and bypassing safety constraints.  
+Finally, cross-model and pretrain–chat transfer analyses reveal that **H-Neurons originate during pre-training** and remain largely unchanged by instruction tuning, yet still reliably signal hallucination risk.
+
+**Main conclusion:**  
+Hallucinations and “trying too hard to please the user” are not diffuse properties of the whole model but are strongly concentrated in an ultra-sparse set of neurons whose activations both *predict* and *drive* over-compliant behavior, suggesting a concrete handle for future hallucination detection and targeted alignment interventions.
+</details>
